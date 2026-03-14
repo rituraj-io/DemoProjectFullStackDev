@@ -1,6 +1,10 @@
 'use client';
 
+import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
+
 import ThemeToggle from './ThemeToggle';
+import LanguageSwitcher from './LanguageSwitcher';
 import MetricCard from './MetricCard';
 import ChangeLog from './ChangeLog';
 import { useServerMetrics } from '@/app/hooks/useServerMetrics';
@@ -15,12 +19,14 @@ interface DashboardClientProps {
 
 
 // Client-side dashboard — receives server-fetched data as props,
-// then maintains real-time updates via socket.io polling.
+// then maintains real-time updates via socket.io broadcasts.
 export default function DashboardClient({
 	initialMetrics,
 	initialChangelog,
 	initialError,
 }: DashboardClientProps) {
+	const { t } = useTranslation();
+
 	const { metrics, changelog, error } = useServerMetrics({
 		initialMetrics,
 		initialChangelog,
@@ -43,31 +49,41 @@ export default function DashboardClient({
 					<h1
 						className="text-sm font-semibold tracking-wide uppercase"
 						style={{ color: 'var(--text-secondary)' }}>
-						Dashboard
+						{t('nav.dashboard')}
 					</h1>
-					<ThemeToggle />
+					<div className="flex items-center gap-3">
+						<Link
+							href="/session"
+							className="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors duration-150"
+							style={{ color: 'var(--text-secondary)', background: 'var(--bg-accent)' }}
+							onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-hover)')}
+							onMouseLeave={e => (e.currentTarget.style.background = 'var(--bg-accent)')}>
+							{t('nav.session')}
+						</Link>
+						<LanguageSwitcher />
+						<ThemeToggle />
+					</div>
 				</div>
 			</header>
 
 
 			{/* Main content */}
 			<main className="mx-auto max-w-4xl px-6 py-8">
-				{/* Inline error banner — shown when backend is unreachable */}
-				{error && (
-					<div
-						className="mb-6 rounded-lg px-4 py-3 text-sm font-medium"
-						style={{
-							background: 'var(--changelog-badge-negative)',
-							color: 'var(--changelog-badge-negative-text)',
-						}}>
-						{error}
-					</div>
-				)}
+				{/* Inline error banner — always rendered to keep DOM stable and prevent animation replay */}
+				<div
+					className="mb-6 rounded-lg px-4 py-3 text-sm font-medium"
+					style={{
+						background: 'var(--changelog-badge-negative)',
+						color: 'var(--changelog-badge-negative-text)',
+						display: error ? 'block' : 'none',
+					}}>
+					{error}
+				</div>
 
 				{/* Metric cards grid */}
 				<section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 					<MetricCard
-						label="Requests"
+						label={t('metrics.requests')}
 						value={metrics.num_requests}
 						index={0}
 						colorVar="--metric-requests"
@@ -79,7 +95,7 @@ export default function DashboardClient({
 					/>
 
 					<MetricCard
-						label="Tokens Used"
+						label={t('metrics.tokensUsed')}
 						value={metrics.num_token_used}
 						index={1}
 						colorVar="--metric-tokens"
@@ -92,7 +108,7 @@ export default function DashboardClient({
 					/>
 
 					<MetricCard
-						label="Active Connections"
+						label={t('metrics.activeConnections')}
 						value={metrics.num_active_connections}
 						index={2}
 						colorVar="--metric-connections"
@@ -113,16 +129,16 @@ export default function DashboardClient({
 					<h2
 						className="mb-5 text-xs font-semibold tracking-widest uppercase"
 						style={{ color: 'var(--text-tertiary)' }}>
-						Change Log
+						{t('changelog.title')}
 					</h2>
 
 					<div
-						className="rounded-xl p-5"
+						className="max-h-[600px] overflow-y-auto rounded-xl p-5"
 						style={{
 							background: 'var(--bg-tertiary)',
 							boxShadow: 'var(--shadow-card)',
 						}}>
-						<ChangeLog entries={changelog} />
+						<ChangeLog entries={changelog.slice(0, 50)} />
 					</div>
 				</section>
 			</main>

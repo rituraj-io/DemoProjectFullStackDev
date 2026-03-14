@@ -1,12 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 /**
  * Minimal theme toggle button — switches between light and dark modes.
  * Persists preference in localStorage and syncs via data-theme attribute.
  */
 export default function ThemeToggle() {
+	const { t } = useTranslation();
 	const [isDark, setIsDark] = useState(false);
 	const [mounted, setMounted] = useState(false);
 
@@ -34,8 +36,8 @@ export default function ThemeToggle() {
 	return (
 		<button
 			onClick={toggle}
-			aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-			title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+			aria-label={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
+			title={isDark ? t('theme.switchToLight') : t('theme.switchToDark')}
 			className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg transition-colors duration-200"
 			style={{
 				background: 'var(--toggle-bg)',

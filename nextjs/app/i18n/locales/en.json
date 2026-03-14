@@ -1,0 +1,51 @@
+{
+    "nav": {
+        "dashboard": "Dashboard",
+        "session": "Session",
+        "sessionBilling": "Session Billing",
+        "sessions": "Sessions",
+        "backToDashboard": "Dashboard"
+    },
+    "metrics": {
+        "requests": "Requests",
+        "tokensUsed": "Tokens Used",
+        "activeConnections": "Active Connections"
+    },
+    "changelog": {
+        "title": "Change Log",
+        "empty": "No changes recorded yet"
+    },
+    "session": {
+        "startTitle": "Start a billing session",
+        "rate": "Rate: $0.02 per second",
+        "startButton": "Start Session",
+        "loading": "Loading session...",
+        "activeLabel": "Session #{{id}} Active",
+        "runningCost": "Running Cost",
+        "endButton": "End Session",
+        "ending": "Ending session & creating payment...",
+        "completeTitle": "Session Complete",
+        "duration": "Duration",
+        "totalCost": "Total Cost",
+        "paymentIntent": "Payment Intent",
+        "completePayment": "Complete Payment",
+        "paymentSuccess": "Payment successful",
+        "processing": "Processing...",
+        "payNow": "Pay Now",
+        "startNew": "Start New Session",
+        "billingFooter": "Billing rate: $0.02/sec · Stripe test mode · Minimum charge $0.50",
+        "activeSessions": "Active Sessions",
+        "noActiveSessions": "No active sessions",
+        "viewing": "viewing",
+        "sessionId": "Session #{{id}}"
+    },
+    "theme": {
+        "switchToLight": "Switch to light mode",
+        "switchToDark": "Switch to dark mode"
+    },
+    "language": {
+        "en": "English",
+        "ar": "العربية",
+        "es": "Español"
+    }
+}

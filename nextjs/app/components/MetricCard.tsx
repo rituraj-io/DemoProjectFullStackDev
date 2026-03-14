@@ -17,6 +17,7 @@ interface MetricCardProps {
 /**
  * A single metric card — displays a labeled value with an accent icon.
  * Uses CSS variables for theming so colors adapt to light/dark mode.
+ * The animate-card-enter class plays once via CSS (iteration-count: 1).
  */
 export default function MetricCard({ label, value, icon, colorVar, index }: MetricCardProps) {
 	return (

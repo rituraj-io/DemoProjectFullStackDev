@@ -41,6 +41,23 @@
     --toggle-bg: #ebebea;
     --toggle-fg: #37352f;
     --toggle-hover: #e0dfdc;
+
+    --session-timer-bg: #f0f7ff;
+    --session-timer-text: #1565c0;
+    --session-cost-text: #2e7d32;
+    --session-btn-start-bg: #2e7d32;
+    --session-btn-start-hover: #1b5e20;
+    --session-btn-end-bg: #c62828;
+    --session-btn-end-hover: #b71c1c;
+    --session-btn-text: #ffffff;
+    --session-result-bg: #f0eeeb;
+    --session-result-border: #e8e5e0;
+    --session-intent-bg: #e3f2fd;
+    --session-intent-text: #1565c0;
+    --session-stripe-bg: #ffffff;
+    --session-stripe-border: #e8e5e0;
+    --session-nav-text: #787774;
+    --session-nav-hover: #37352f;
 }
 
 
@@ -84,6 +101,39 @@
     --toggle-bg: #2f2f2f;
     --toggle-fg: #ffffffcf;
     --toggle-hover: #3a3a3a;
+
+    --session-timer-bg: #0d2948;
+    --session-timer-text: #64b5f6;
+    --session-cost-text: #81c784;
+    --session-btn-start-bg: #2e7d32;
+    --session-btn-start-hover: #388e3c;
+    --session-btn-end-bg: #c62828;
+    --session-btn-end-hover: #e53935;
+    --session-btn-text: #ffffff;
+    --session-result-bg: #2a2a2a;
+    --session-result-border: #ffffff14;
+    --session-intent-bg: #0d2948;
+    --session-intent-text: #64b5f6;
+    --session-stripe-bg: #252525;
+    --session-stripe-border: #ffffff14;
+    --session-nav-text: #ffffff71;
+    --session-nav-hover: #ffffffcf;
+}
+
+
+/* -- RTL Arabic font override -- */
+
+[dir="rtl"] body {
+    font-family: var(--font-noto-arabic), var(--font-dm-sans), sans-serif;
+}
+
+
+/* -- Prevent flash of wrong theme on page load -- */
+
+html:not([data-hydrated]) *,
+html:not([data-hydrated]) *::before,
+html:not([data-hydrated]) *::after {
+    transition: none !important;
 }
 
 
@@ -129,6 +179,22 @@ body {
 
 .animate-fade-in-up {
     animation: fade-in-up 0.3s ease-out both;
+}
+
+
+/* -- Session timer pulse animation -- */
+
+@keyframes pulse-dot {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.4;
+    }
+}
+
+.animate-pulse-dot {
+    animation: pulse-dot 1.5s ease-in-out infinite;
 }
 
 

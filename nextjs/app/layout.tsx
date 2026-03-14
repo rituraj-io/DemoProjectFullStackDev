@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { DM_Sans, Geist_Mono } from "next/font/google";
+import { DM_Sans, Geist_Mono, Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+
+import I18nProvider from "./components/I18nProvider";
 
 
 const dmSans = DM_Sans({
@@ -16,8 +18,15 @@ const geistMono = Geist_Mono({
 });
 
 
+const notoArabic = Noto_Sans_Arabic({
+    variable: "--font-noto-arabic",
+    subsets: ["arabic"],
+    weight: ["400", "500", "600", "700"],
+});
+
+
 export const metadata: Metadata = {
-    title: "Dashboard",
+    title: { default: "Dashboard", template: "%s | Upwork App" },
     description: "API metrics dashboard",
 };
 
@@ -32,9 +41,9 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html suppressHydrationWarning>
             <head>
-                {/* Inline script to restore saved theme before first paint */}
+                {/* Inline script to restore saved theme + language direction before first paint */}
                 <script
                     dangerouslySetInnerHTML={{
                         __html: `
@@ -44,6 +53,10 @@ export default function RootLayout({
                                     if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                                         document.documentElement.setAttribute('data-theme', 'dark');
                                     }
+                                    var lang = localStorage.getItem('lang') || 'en';
+                                    document.documentElement.setAttribute('lang', lang);
+                                    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+                                    document.documentElement.setAttribute('data-hydrated', '');
                                 } catch(e) {}
                             })();
                         `,
@@ -51,9 +64,9 @@ export default function RootLayout({
                 />
             </head>
             <body
-                className={`${dmSans.variable} ${geistMono.variable} font-sans antialiased`}
+                className={`${dmSans.variable} ${geistMono.variable} ${notoArabic.variable} font-sans antialiased`}
             >
-                {children}
+                <I18nProvider>{children}</I18nProvider>
             </body>
         </html>
     );

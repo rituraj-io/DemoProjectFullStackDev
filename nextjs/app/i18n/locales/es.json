@@ -1,0 +1,51 @@
+{
+    "nav": {
+        "dashboard": "Panel",
+        "session": "Sesión",
+        "sessionBilling": "Facturación de Sesión",
+        "sessions": "Sesiones",
+        "backToDashboard": "Panel"
+    },
+    "metrics": {
+        "requests": "Solicitudes",
+        "tokensUsed": "Tokens Usados",
+        "activeConnections": "Conexiones Activas"
+    },
+    "changelog": {
+        "title": "Registro de Cambios",
+        "empty": "No se han registrado cambios aún"
+    },
+    "session": {
+        "startTitle": "Iniciar una sesión de facturación",
+        "rate": "Tarifa: $0.02 por segundo",
+        "startButton": "Iniciar Sesión",
+        "loading": "Cargando sesión...",
+        "activeLabel": "Sesión #{{id}} Activa",
+        "runningCost": "Costo Actual",
+        "endButton": "Finalizar Sesión",
+        "ending": "Finalizando sesión y creando pago...",
+        "completeTitle": "Sesión Completada",
+        "duration": "Duración",
+        "totalCost": "Costo Total",
+        "paymentIntent": "Intención de Pago",
+        "completePayment": "Completar Pago",
+        "paymentSuccess": "Pago exitoso",
+        "processing": "Procesando...",
+        "payNow": "Pagar Ahora",
+        "startNew": "Iniciar Nueva Sesión",
+        "billingFooter": "Tarifa: $0.02/seg · Modo de prueba Stripe · Cargo mínimo $0.50",
+        "activeSessions": "Sesiones Activas",
+        "noActiveSessions": "No hay sesiones activas",
+        "viewing": "viendo",
+        "sessionId": "Sesión #{{id}}"
+    },
+    "theme": {
+        "switchToLight": "Cambiar a modo claro",
+        "switchToDark": "Cambiar a modo oscuro"
+    },
+    "language": {
+        "en": "English",
+        "ar": "العربية",
+        "es": "Español"
+    }
+}

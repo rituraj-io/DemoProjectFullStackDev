@@ -1,0 +1,51 @@
+{
+    "nav": {
+        "dashboard": "لوحة التحكم",
+        "session": "الجلسة",
+        "sessionBilling": "فوترة الجلسة",
+        "sessions": "الجلسات",
+        "backToDashboard": "لوحة التحكم"
+    },
+    "metrics": {
+        "requests": "الطلبات",
+        "tokensUsed": "الرموز المستخدمة",
+        "activeConnections": "الاتصالات النشطة"
+    },
+    "changelog": {
+        "title": "سجل التغييرات",
+        "empty": "لا توجد تغييرات مسجلة بعد"
+    },
+    "session": {
+        "startTitle": "بدء جلسة فوترة",
+        "rate": "السعر: $0.02 في الثانية",
+        "startButton": "بدء الجلسة",
+        "loading": "جاري تحميل الجلسة...",
+        "activeLabel": "الجلسة #{{id}} نشطة",
+        "runningCost": "التكلفة الحالية",
+        "endButton": "إنهاء الجلسة",
+        "ending": "جاري إنهاء الجلسة وإنشاء الدفع...",
+        "completeTitle": "اكتملت الجلسة",
+        "duration": "المدة",
+        "totalCost": "التكلفة الإجمالية",
+        "paymentIntent": "معرّف الدفع",
+        "completePayment": "إكمال الدفع",
+        "paymentSuccess": "تم الدفع بنجاح",
+        "processing": "جاري المعالجة...",
+        "payNow": "ادفع الآن",
+        "startNew": "بدء جلسة جديدة",
+        "billingFooter": "سعر الفوترة: $0.02/ثانية · وضع اختبار Stripe · الحد الأدنى $0.50",
+        "activeSessions": "الجلسات النشطة",
+        "noActiveSessions": "لا توجد جلسات نشطة",
+        "viewing": "قيد العرض",
+        "sessionId": "الجلسة #{{id}}"
+    },
+    "theme": {
+        "switchToLight": "التبديل إلى الوضع الفاتح",
+        "switchToDark": "التبديل إلى الوضع الداكن"
+    },
+    "language": {
+        "en": "English",
+        "ar": "العربية",
+        "es": "Español"
+    }
+}

@@ -1,14 +1,9 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import type { BackendChangelogEntry } from '@/data/types';
-
-
-// Human-readable labels for metric field keys
-const FIELD_LABELS: Record<string, string> = {
-	num_requests: 'Requests',
-	num_token_used: 'Tokens Used',
-	num_active_connections: 'Active Connections',
-};
 
 
 // Formats an ISO date string to human-readable local time (HH:MM:SS AM/PM)
@@ -22,12 +17,33 @@ function formatTime(isoString: string): string {
 }
 
 
-// Renders a vertical timeline of metric changes from the backend changelog
+// Renders a vertical timeline of metric changes from the backend changelog.
+// Only animates entries that are new since the last render — prevents
+// the entire list from re-animating when data updates arrive.
 export default function ChangeLog({ entries }: { entries: BackendChangelogEntry[] }) {
+	const { t } = useTranslation();
+
+	/** Translates backend field names to user-facing labels */
+	const fieldLabel = (key: string): string => {
+		const map: Record<string, string> = {
+			num_requests: t('metrics.requests'),
+			num_token_used: t('metrics.tokensUsed'),
+			num_active_connections: t('metrics.activeConnections'),
+		};
+		return map[key] ?? key;
+	};
+
+	// Track which entry IDs have already been rendered (skip animation for them)
+	const seenIdsRef = useRef<Set<number>>(new Set());
+
+	useEffect(() => {
+		entries.forEach((e) => seenIdsRef.current.add(e.id));
+	}, [entries]);
+
 	if (entries.length === 0) {
 		return (
 			<div className="py-12 text-center text-sm" style={{ color: 'var(--text-tertiary)' }}>
-				No changes recorded yet
+				{t('changelog.empty')}
 			</div>
 		);
 	}
@@ -37,12 +53,13 @@ export default function ChangeLog({ entries }: { entries: BackendChangelogEntry[
 			{entries.map((entry, i) => {
 				const diff = entry.new_value - entry.old_value;
 				const isPositive = diff >= 0;
+				const isNew = !seenIdsRef.current.has(entry.id);
 
 				return (
 					<div
 						key={entry.id}
-						className="animate-fade-in-up flex gap-4 pb-6"
-						style={{ animationDelay: `${i * 60}ms` }}>
+						className={`flex gap-4 pb-6${isNew ? ' animate-fade-in-up' : ''}`}
+						style={isNew ? { animationDelay: `${i * 60}ms` } : undefined}>
 
 						{/* Timeline dot + vertical line */}
 						<div className="flex flex-col items-center pt-1.5">
@@ -77,7 +94,7 @@ export default function ChangeLog({ entries }: { entries: BackendChangelogEntry[
 											? 'var(--changelog-badge-positive-text)'
 											: 'var(--changelog-badge-negative-text)',
 									}}>
-									{FIELD_LABELS[entry.field_name] ?? entry.field_name}
+									{fieldLabel(entry.field_name)}
 									<span className="font-mono">
 										{isPositive ? '+' : ''}{diff.toLocaleString()}
 									</span>

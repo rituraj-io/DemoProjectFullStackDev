@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd:*)",
+      "Bash(chmod:*)",
+      "Bash(openssl rand:*)",
+      "WebSearch",
+      "WebFetch(domain:jsonplaceholder.typicode.com)",
+      "WebFetch(domain:dummyjson.com)",
+      "WebFetch(domain:api.quotable.io)",
+      "Bash(docker compose:*)"
+    ]
+  }
+}

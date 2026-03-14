@@ -1,0 +1,51 @@
+services:
+    postgres:
+        image: postgres:17-alpine
+        container_name: upwork_postgres
+        restart: unless-stopped
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER:-admin}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
+            POSTGRES_DB: ${POSTGRES_DB:-demo_db}
+        volumes:
+            - ./.sql:/var/lib/postgresql/data
+        networks:
+            - app-network
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-admin}']
+            interval: 5s
+            timeout: 3s
+            retries: 5
+
+    express-app:
+        build: ./express-app
+        container_name: upwork_express
+        restart: unless-stopped
+        ports:
+            - '4000:4000'
+        env_file:
+            - ./express-app/.env
+        depends_on:
+            postgres:
+                condition: service_healthy
+        networks:
+            - app-network
+
+    nextjs:
+        build: ./nextjs
+        container_name: upwork_nextjs
+        restart: unless-stopped
+        ports:
+            - '3000:3000'
+        env_file:
+            - ./nextjs/.env
+        depends_on:
+            - express-app
+        networks:
+            - app-network
+
+networks:
+    app-network:
+        driver: bridge

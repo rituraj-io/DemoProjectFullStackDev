@@ -8,9 +8,6 @@ import type {
 	ServerMetrics,
 } from '@/data/types';
 
-// How often the frontend polls via socket (ms)
-const POLL_INTERVAL = 10_000;
-
 
 interface UseServerMetricsProps {
 	initialMetrics: ServerMetrics;
@@ -26,8 +23,9 @@ interface UseServerMetricsReturn {
 }
 
 
-// Initializes state with server-fetched data, then maintains
-// real-time updates via socket.io polling every 10 seconds.
+// Listens for server-side broadcasts via socket.io.
+// The server fetches from the Express backend on a global interval
+// and emits to all connected clients — no per-client polling needed.
 export function useServerMetrics({
 	initialMetrics,
 	initialChangelog,
@@ -39,7 +37,7 @@ export function useServerMetrics({
 
 	const socketRef = useRef<Socket | null>(null);
 
-	// Track the highest changelog ID from the initial data
+	// Track the highest changelog ID to prevent duplicates on broadcast
 	const lastIdRef = useRef<number>(
 		initialChangelog.length > 0
 			? Math.max(...initialChangelog.map((e) => e.id))
@@ -47,57 +45,55 @@ export function useServerMetrics({
 	);
 
 
-	// Handles metrics response — updates metric cards
-	const handleMetricsResponse = useCallback((result: MetricsApiResponse) => {
+	// Handles metrics broadcast — updates metric cards
+	const handleMetricsUpdate = useCallback((result: MetricsApiResponse) => {
 		if (result.success && result.data) {
 			setMetrics(result.data);
 			setError(null);
-		} else {
-			setError('Backend is not responding. Retrying...');
 		}
 	}, []);
 
 
-	// Handles changelog response — prepends new entries at the top
-	const handleChangelogResponse = useCallback((result: ChangelogApiResponse) => {
+	// Handles changelog broadcast — prepends only truly new entries
+	const handleChangelogUpdate = useCallback((result: ChangelogApiResponse) => {
 		if (result.success && result.data && result.data.length > 0) {
 			setError(null);
 
-			// Track the highest ID we've seen so far
-			const maxId = Math.max(...result.data.map((e) => e.id));
-			if (maxId > lastIdRef.current) {
-				lastIdRef.current = maxId;
-			}
+			// Filter out entries we already have (dedup safety)
+			const newEntries = result.data.filter((e) => e.id > lastIdRef.current);
 
-			// Prepend new entries (backend returns newest first)
-			setChangelog((prev) => [...result.data!, ...prev]);
-		} else if (!result.success) {
-			setError('Backend is not responding. Retrying...');
+			if (newEntries.length > 0) {
+				const maxId = Math.max(...newEntries.map((e) => e.id));
+				lastIdRef.current = maxId;
+
+				setChangelog((prev) => [...newEntries, ...prev].slice(0, 50));
+			}
 		}
+	}, []);
+
+
+	// Handles real-time active connection count pushed by the server
+	const handleConnectionsUpdate = useCallback((count: number) => {
+		setMetrics((prev) => ({ ...prev, num_active_connections: count }));
 	}, []);
 
 
 	useEffect(() => {
-		// Establish socket.io connection for continued polling
 		const socket = io({ transports: ['websocket', 'polling'] });
 		socketRef.current = socket;
 
-		socket.on('metrics-update', handleMetricsResponse);
-		socket.on('changelog-update', handleChangelogResponse);
-
-		// Poll every 10 seconds — sends both metrics and changelog requests
-		const interval = setInterval(() => {
-			socket.emit('request-metrics');
-			socket.emit('request-changelog', lastIdRef.current);
-		}, POLL_INTERVAL);
-
+		socket.on('metrics-update', handleMetricsUpdate);
+		socket.on('changelog-update', handleChangelogUpdate);
+		socket.on('connections-update', handleConnectionsUpdate);
 
 		return () => {
-			clearInterval(interval);
+			socket.off('metrics-update', handleMetricsUpdate);
+			socket.off('changelog-update', handleChangelogUpdate);
+			socket.off('connections-update', handleConnectionsUpdate);
 			socket.disconnect();
 			socketRef.current = null;
 		};
-	}, [handleMetricsResponse, handleChangelogResponse]);
+	}, [handleMetricsUpdate, handleChangelogUpdate, handleConnectionsUpdate]);
 
 
 	return { metrics, changelog, error };
