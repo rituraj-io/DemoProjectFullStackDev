@@ -49,6 +49,18 @@ const endSession = async (sessionId) => {
 	const paymentIntent = await stripe.paymentIntents.create({
 		amount: chargeAmount,
 		currency: 'usd',
+		description: `Billing session #${sessionId} — ${durationSeconds}s at $0.02/sec`,
+		automatic_payment_methods: { enabled: true },
+		shipping: {
+			name: 'Demo Customer',
+			address: {
+				line1: '123 Test Street',
+				city: 'San Francisco',
+				state: 'CA',
+				postal_code: '94105',
+				country: 'US',
+			},
+		},
 		metadata: {
 			session_id: String(sessionId),
 			duration_seconds: String(durationSeconds),

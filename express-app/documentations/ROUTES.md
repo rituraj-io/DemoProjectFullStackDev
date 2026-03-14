@@ -101,3 +101,61 @@ Response: {
 }
 Notes: Returns current session info. For active sessions, `duration_seconds` and `cost_cents` are calculated live from the start time. Requires valid `api_key`. Returns 400 if `session_id` is missing. Returns 401 if unauthorized. Returns 500 if session not found.
 ```
+
+## List Active Sessions
+
+```
+Payload: { "api_key": "string" }
+Route: /api/session/active
+Request Type: POST
+Response: {
+    "success": true,
+    "message": "Active sessions retrieved successfully",
+    "data": [
+        {
+            "id": 1,
+            "started_at": "2026-03-14T00:00:00.000Z",
+            "duration_seconds": 45,
+            "cost_cents": 90,
+            "status": "active"
+        }
+    ]
+}
+Notes: Returns all currently active sessions with live-calculated duration and running cost. Sorted newest first. Requires valid `api_key`. Returns 401 if unauthorized.
+```
+
+## Update Active Connections
+
+```
+Payload: { "api_key": "string", "amount": 1 }
+Route: /api/connections/update
+Request Type: POST
+Response: {
+    "success": true,
+    "message": "Active connections updated by 1",
+    "data": {
+        "num_requests": 0,
+        "num_token_used": 0,
+        "num_active_connections": 1
+    }
+}
+Notes: Increments or decrements num_active_connections. Use positive `amount` to increment, negative to decrement. Defaults to +1 if `amount` is omitted. Requires valid `api_key`. Returns 401 if unauthorized.
+```
+
+## Set Active Connections
+
+```
+Payload: { "api_key": "string", "value": 5 }
+Route: /api/connections/set
+Request Type: POST
+Response: {
+    "success": true,
+    "message": "Active connections set to 5",
+    "data": {
+        "num_requests": 0,
+        "num_token_used": 0,
+        "num_active_connections": 5
+    }
+}
+Notes: Sets num_active_connections to an exact value. Requires `value` to be a number. Automatically reset to 0 on server start. Requires valid `api_key`. Returns 400 if `value` is missing or not a number. Returns 401 if unauthorized.
+```
