@@ -1,0 +1,142 @@
+@import "tailwindcss";
+
+
+/* -- Light theme (default) -- */
+
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f7f6f3;
+    --bg-tertiary: #ffffff;
+    --bg-hover: #f1f0ed;
+    --bg-accent: #f0eeeb;
+
+    --text-primary: #37352f;
+    --text-secondary: #787774;
+    --text-tertiary: #b4b4b0;
+    --text-accent: #37352f;
+
+    --border-primary: #e8e5e0;
+    --border-secondary: #ebebea;
+
+    --metric-requests-bg: #e8f5e9;
+    --metric-requests-text: #2e7d32;
+    --metric-requests-icon: #43a047;
+    --metric-tokens-bg: #e3f2fd;
+    --metric-tokens-text: #1565c0;
+    --metric-tokens-icon: #1e88e5;
+    --metric-connections-bg: #fff3e0;
+    --metric-connections-text: #e65100;
+    --metric-connections-icon: #fb8c00;
+
+    --changelog-dot: #d4d4d0;
+    --changelog-line: #ebebea;
+    --changelog-badge-positive: #e8f5e9;
+    --changelog-badge-positive-text: #2e7d32;
+    --changelog-badge-negative: #fce4ec;
+    --changelog-badge-negative-text: #c62828;
+
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 0 0 1px var(--border-primary);
+    --shadow-card-hover: 0 3px 12px rgba(0, 0, 0, 0.06), 0 0 0 1px var(--border-primary);
+
+    --toggle-bg: #ebebea;
+    --toggle-fg: #37352f;
+    --toggle-hover: #e0dfdc;
+}
+
+
+/* -- Dark theme -- */
+
+[data-theme="dark"] {
+    --bg-primary: #191919;
+    --bg-secondary: #202020;
+    --bg-tertiary: #252525;
+    --bg-hover: #2c2c2c;
+    --bg-accent: #2f2f2f;
+
+    --text-primary: #ffffffcf;
+    --text-secondary: #ffffff71;
+    --text-tertiary: #ffffff3d;
+    --text-accent: #ffffffcf;
+
+    --border-primary: #ffffff14;
+    --border-secondary: #ffffff0f;
+
+    --metric-requests-bg: #1b3a1e;
+    --metric-requests-text: #81c784;
+    --metric-requests-icon: #66bb6a;
+    --metric-tokens-bg: #0d2948;
+    --metric-tokens-text: #64b5f6;
+    --metric-tokens-icon: #42a5f5;
+    --metric-connections-bg: #3e2200;
+    --metric-connections-text: #ffb74d;
+    --metric-connections-icon: #ffa726;
+
+    --changelog-dot: #444;
+    --changelog-line: #ffffff14;
+    --changelog-badge-positive: #1b3a1e;
+    --changelog-badge-positive-text: #81c784;
+    --changelog-badge-negative: #3e1519;
+    --changelog-badge-negative-text: #ef9a9a;
+
+    --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--border-primary);
+    --shadow-card-hover: 0 3px 12px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--border-primary);
+
+    --toggle-bg: #2f2f2f;
+    --toggle-fg: #ffffffcf;
+    --toggle-hover: #3a3a3a;
+}
+
+
+/* -- Base styles -- */
+
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+
+/* -- Staggered card entrance animation -- */
+
+@keyframes card-enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-card-enter {
+    animation: card-enter 0.4s ease-out both;
+}
+
+
+/* -- Changelog entry fade-in -- */
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.3s ease-out both;
+}
+
+
+/* -- Tailwind theme tokens -- */
+
+@theme inline {
+    --color-background: var(--bg-primary);
+    --color-foreground: var(--text-primary);
+    --font-sans: var(--font-dm-sans);
+    --font-mono: var(--font-geist-mono);
+}
