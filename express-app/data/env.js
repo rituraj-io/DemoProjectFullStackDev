@@ -25,7 +25,13 @@ const PG_USER = process.env.PG_USER;
 const PG_PASSWORD = process.env.PG_PASSWORD;
 const PG_DATABASE = process.env.PG_DATABASE;
 
-// Validate all required PostgreSQL env vars on startup
-validateEnvVars({ PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE });
 
-module.exports = { PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE };
+// API authentication
+const API_SECRET_TOKEN = process.env.API_SECRET_TOKEN;
+
+
+// Validate all required env vars on startup
+validateEnvVars({ PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE, API_SECRET_TOKEN });
+
+
+module.exports = { PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE, API_SECRET_TOKEN };
