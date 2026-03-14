@@ -1,6 +1,6 @@
 -- Create the global_data table if it doesn't already exist
 CREATE TABLE IF NOT EXISTS global_data (
-    id INT PRIMARY KEY AUTO_INCREMENT,                -- Unique identifier for the row
+    id SERIAL PRIMARY KEY,                             -- Unique identifier for the row
     num_requests INT NOT NULL DEFAULT 0,              -- Total number of API requests made
     num_token_used INT NOT NULL DEFAULT 0,            -- Total number of tokens consumed
     num_active_connections INT NOT NULL DEFAULT 0     -- Current number of active connections

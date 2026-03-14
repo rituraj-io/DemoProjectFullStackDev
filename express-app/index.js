@@ -13,21 +13,14 @@ const PORT = 4000;
 app.use(express.json());
 
 /**
- * Middleware to track every incoming request.
- * Increments the num_requests counter in the database.
- */
-app.use(async (req, res, next) => {
-	await updateStat('num_requests');
-	next();
-});
-
-/**
  * POST /api/status
  * Returns current server metrics from the database.
+ * Increments the num_requests counter on each call.
  * @returns {{ success: boolean, message: string, data: { num_requests: number, num_token_used: number, num_active_connections: number } }}
  */
 app.post('/api/status', authGuard, async (req, res) => {
 	try {
+		await updateStat('num_requests');
 		const data = await fetchLatestStats();
 
 		res.json({
