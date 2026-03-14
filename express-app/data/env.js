@@ -30,8 +30,12 @@ const PG_DATABASE = process.env.PG_DATABASE;
 const API_SECRET_TOKEN = process.env.API_SECRET_TOKEN;
 
 
+// Stripe integration
+const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
+
+
 // Validate all required env vars on startup
-validateEnvVars({ PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE, API_SECRET_TOKEN });
+validateEnvVars({ PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE, API_SECRET_TOKEN, STRIPE_SECRET_KEY });
 
 
-module.exports = { PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE, API_SECRET_TOKEN };
+module.exports = { PG_HOST, PG_PORT, PG_USER, PG_PASSWORD, PG_DATABASE, API_SECRET_TOKEN, STRIPE_SECRET_KEY };
